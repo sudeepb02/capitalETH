@@ -1,0 +1,27 @@
+{
+  "name": "capitaleth",
+  "version": "1.0.0",
+  "description": "Capital ETH",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@openzeppelin/contracts": "^3.0.1",
+    "@truffle/hdwallet-provider": "^1.0.34"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudeepb02/capitalETH.git"
+  },
+  "author": "Sudeep Biswas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudeepb02/capitalETH/issues"
+  },
+  "homepage": "https://github.com/sudeepb02/capitalETH#readme"
+}

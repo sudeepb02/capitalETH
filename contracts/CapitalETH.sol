@@ -47,6 +47,8 @@ contract CapitalETH {
     event newSIPCreated(uint id, address indexed srcAccount);
     // SIPUpdated();
     // installmentReceived();
+    event updateKyberNetworkProxyContract(address indexed oldAddress, address indexed newContractAddress);
+
     event tokensSwapped(
         address indexed srcAccount,
         ERC20 srcToken,
@@ -115,9 +117,13 @@ contract CapitalETH {
 * Kyber Network contract functions
 /******************************************************************************
 */
-    function setKyberNetworkProxyContract(address contractAddress) public returns (bool) {
+    function setKyberNetworkProxyContract(address newContractAddress) public returns (bool) {
+
         require(msg.sender == owner, "Not authorized to call this function");
-        kyberNetworkProxyContract = KyberNetworkProxyInterface(contractAddress);
+        address oldAddress = address(kyberNetworkProxyContract);
+        kyberNetworkProxyContract = KyberNetworkProxyInterface(newContractAddress);
+        emit updateKyberNetworkProxyContract(oldAddress, newContractAddress);
+
     }
 
     function swapTokensUsingKyber(

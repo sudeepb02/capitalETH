@@ -36,7 +36,7 @@ contract CapitalETH {
     Plan[] public plans;
 
     //Kyber Network Proxy contract address to swap tokens
-    KyberNetworkProxyInterface kyberNetworkProxyContract;
+    KyberNetworkProxyInterface public kyberNetworkProxyContract;
 
     constructor() public {
         owner = msg.sender;

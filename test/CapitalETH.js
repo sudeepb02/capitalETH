@@ -49,28 +49,20 @@ contract("CapitalETH", (accounts) => {
 
             const srcTokens = new BN(100).mul(oneTokenInDecimals);
 
-            const initialBalance = new BN(await batToken.balanceOf(alice));
-
             //Approve contract to spend alice's dai balance
             await daiToken.approve(contractInstance.address, srcTokens, {from: alice});
-
-            //Check allowance for this contract
-            assert(daiToken.allowance(alice, contractInstance.address), srcTokens);
 
             const result = await contractInstance.swapTokensUsingKyber( 
                 alice,
                 daiAddress,
-                alice,                
+                alice,
                 batAddress,
                 oneTokenInDecimals,
                 new BN(100).mul(oneTokenInDecimals)
             );
 
             assert(result.receipt.status, true);
-            
-            //Check user balance in BAT tokens
-            const finalBalance = new BN(await batToken.balanceOf(alice));
-            assert.notEqual(initialBalance, finalBalance);
+
         })
 
     })

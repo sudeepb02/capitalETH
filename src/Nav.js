@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Nav.css';
 import {Link} from 'react-router-dom';
+import Web3 from "web3";
+import {Web3Context} from './Web3Context';
 
 function Nav() {
+
+    const [web3, setWeb3] = useContext(Web3Context);
+    const [account, setAccount] = useState('');
+
+    const connect = async () => {
+        if (window.ethereum) {
+            await window.ethereum.enable();
+            console.log("Ethereum enabled");
+            const web3new = new Web3(window.ethereum);
+            setWeb3(web3new);
+            const accounts = await web3new.eth.getAccounts();
+            setAccount(accounts[0]);
+            console.log(account);
+        }
+    }
+    
 
     return (
         <nav>
@@ -16,7 +34,13 @@ function Nav() {
                 <Link to='/about'>
                     <li>About</li>
                 </Link>
+                {web3.ethereum}
+                <button onClick={connect}> 
+                    { account === '' ? "Connect" : "Connected"}
+                </button>
+                <li>{account}</li>
             </ul>
+            
         </nav>
     );
 }

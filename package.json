@@ -6,22 +6,40 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "web3": "^1.2.7"
+  },
   "devDependencies": {
     "@openzeppelin/contracts": "^3.0.1",
     "@truffle/hdwallet-provider": "^1.0.34"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sudeepb02/capitalETH.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "author": "Sudeep Biswas",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sudeepb02/capitalETH/issues"
-  },
-  "homepage": "https://github.com/sudeepb02/capitalETH#readme"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

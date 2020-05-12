@@ -19,8 +19,7 @@ function Nav() {
             setAccount(accounts[0]);
             console.log(account);
         }
-    }
-    
+    } 
 
     return (
         <nav>
@@ -31,16 +30,13 @@ function Nav() {
                 <Link to='/dashboard'>
                     <li>Dashboard</li>
                 </Link>
-                <Link to='/about'>
-                    <li>About</li>
+                <Link to='/process'>
+                    <li>Process</li>
                 </Link>
-                {web3.ethereum}
                 <button onClick={connect}> 
                     { account === '' ? "Connect" : "Connected"}
                 </button>
-                <li>{account}</li>
-            </ul>
-            
+            </ul>          
         </nav>
     );
 }

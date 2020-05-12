@@ -2,7 +2,7 @@ import React, {Component } from 'react';
 import './App.css';
 import Nav from './Nav';
 import Dashboard from './Dashboard';
-import About from './About';
+import Process from './Process';
 import Home from './Home';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {Web3Provider} from './Web3Context';
@@ -21,8 +21,8 @@ class App extends Component {
                                     component={Home}/>
                                 <Route path='/dashboard'
                                     component={Dashboard}/>
-                                <Route path='/about'
-                                    component={About}/>
+                                <Route path='/process'
+                                    component={Process}/>
                             </Switch>
                         </div>
                     </Router>

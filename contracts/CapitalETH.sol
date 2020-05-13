@@ -1,15 +1,19 @@
 pragma solidity ^0.6.0;
 
+
 import "./ERC20Interface.sol";
 import "./KyberNetworkProxy.sol";
+import "./ILendingPool.sol";
+import "./ILendingPoolAddressesProvider.sol";
+
 
 contract CapitalETH {
 
     address payable public owner;
 
-    mapping (address => bool) public processors;        //Mapping of all valid SIP processors
-    mapping (address => uint) public userSIPCount;      //Mapping of Address to SIP count
-    mapping (uint => address) public idToAddress;       //Mapping of SIP id to user address
+    mapping(address => bool) public processors;        //Mapping of all valid SIP processors
+    mapping(address => uint) public userSIPCount;      //Mapping of Address to SIP count
+    mapping(uint => address) public idToAddress;       //Mapping of SIP id to user address
 
     enum Status{ active, paused }
     uint totalSIPCount;
@@ -38,10 +42,18 @@ contract CapitalETH {
     //Kyber Network Proxy contract address to swap tokens
     KyberNetworkProxyInterface public kyberNetworkProxyContract;
 
+    //Aave Lending Pool contract Address
+    uint16 public aaveRef;
+    ILendingPoolAddressesProvider public aaveAddressProvider;
+    ILendingPool public aaveLendingPool;
+
     constructor() public {
         owner = msg.sender;
         processors[owner] = true;
     }
+
+    receive() external payable { }
+    fallback() external payable { }
 
     //Events
     event newSIPCreated(uint id, address indexed srcAccount);
@@ -163,6 +175,43 @@ contract CapitalETH {
 
         // Log the event
         emit tokensSwapped(srcAccount, srcToken, destAccount, destToken, srcQty);
+    }
+
+/*
+*******************************************************************************
+* Aave contract functions
+/******************************************************************************
+*/
+
+    function setAaveAddress(address lendingPoolAddressProvider) public returns (bool) {
+
+        aaveAddressProvider = ILendingPoolAddressesProvider(lendingPoolAddressProvider);
+        aaveLendingPool = ILendingPool(aaveAddressProvider.getLendingPool());
+
+    }
+
+    function getInterestBearingTokens(
+        address srcToken,
+        uint amount,
+        uint16 ref
+    ) public returns (bool) {
+
+        //Transfer source token from user to this contract
+        ERC20(srcToken).transferFrom(msg.sender, address(this), amount);
+
+        ERC20(srcToken).approve(aaveAddressProvider.getLendingPoolCore(), amount);
+
+        //Deposits the source Tokens from contract and returns aTokens
+        aaveLendingPool.deposit(srcToken, amount, ref);
+
+        address aTokenAddress;
+
+        //Get the aToken Address
+        (, , , , , , , , , , , aTokenAddress, ) = aaveLendingPool.getReserveData(srcToken);
+
+        require(ERC20(aTokenAddress).approve(address(this), amount), "Error approving");
+
+        require(ERC20(aTokenAddress).transferFrom(address(this), msg.sender, amount), "Error transferring tokens");
     }
 
 }

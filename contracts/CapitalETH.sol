@@ -112,6 +112,24 @@ contract CapitalETH {
         plans[id].status = Status.paused;
     }
 
+    function getPlansByAddress(
+        address srcAddress
+    )
+    public
+    view
+    returns (uint[] memory) {
+
+        uint[] memory result = new uint[](userSIPCount[srcAddress]);
+        uint index = 0;
+        for (uint i = 0; i < plans.length; i++) {
+            if (idToAddress[i] == srcAddress) {
+                result[index] = i;
+                index++;
+            }
+        }
+        return result;
+    }
+
 /*
 *******************************************************************************
 * Kyber Network contract functions

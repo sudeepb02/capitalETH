@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './Nav.css';
 import {Link} from 'react-router-dom';
 import Web3 from "web3";
+import './Nav.css';
 import {Web3Context} from './Web3Context';
 
 function Nav() {

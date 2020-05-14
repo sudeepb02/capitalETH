@@ -1,11 +1,12 @@
 import React, {Component } from 'react';
-import './App.css';
-import Nav from './Nav';
-import Dashboard from './Dashboard';
-import Process from './Process';
-import Home from './Home';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {Web3Provider} from './Web3Context';
+import './App.css';
+import Nav from './components/Nav';
+import Dashboard from './components/Dashboard';
+import Process from './components/Process';
+import Home from './components/Home';
+import {Web3Provider} from './components/Web3Context';
+
 
 class App extends Component {
     render() {

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Web3Context} from './Web3Context';
-import CapitalETH from './abis/CapitalETH.json';
+import CapitalETH from '../abis/CapitalETH.json';
 import SIPPlan from './SIPPlan';
 
 function Dashboard() {
@@ -26,20 +26,13 @@ function Dashboard() {
 
         const data = await capitalETHInstance.methods.plans(0).call();
         console.log(data);
-
-        // const planData = await data.json();
-        console.log("JSON data");
-        // console.log(planData);
-
         setPlans(data);
-
     }
     return (
         <div>
             <h1>Dashboard</h1>
-            {/* <button onClick={displayData}>Test</button> */}
             <SIPPlan data={plans}/>
-            
+           
         </div>
     );
 }

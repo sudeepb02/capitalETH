@@ -5,6 +5,7 @@ import "./ERC20Interface.sol";
 import "./KyberNetworkProxy.sol";
 import "./ILendingPool.sol";
 import "./ILendingPoolAddressesProvider.sol";
+import "./ATokenInterface.sol";
 
 
 contract CapitalETH {
@@ -190,7 +191,7 @@ contract CapitalETH {
 
     }
 
-    function getInterestBearingTokens(
+    function getInterestBearingATokens(
         address srcToken,
         uint amount,
         uint16 ref
@@ -212,6 +213,27 @@ contract CapitalETH {
         require(ERC20(aTokenAddress).approve(address(this), amount), "Error approving");
 
         require(ERC20(aTokenAddress).transferFrom(address(this), msg.sender, amount), "Error transferring tokens");
+    }
+
+    function getUnderlyingToken(
+        address aTokenAddress,
+        uint amount
+    )
+    public
+    returns (bool) {
+
+        ERC20(aTokenAddress).transferFrom(msg.sender, address(this), amount);
+
+        //Redeem underlying tokens. The underlying token is transferred to this contract
+        AToken(aTokenAddress).redeem(amount);
+
+        //Get underlying token address
+        address underlyingToken = AToken(aTokenAddress).underlyingAssetAddress();
+
+        ERC20(underlyingToken).approve(address(this), amount);
+
+        ERC20(underlyingToken).transferFrom(address(this), msg.sender, amount);
+
     }
 
 }

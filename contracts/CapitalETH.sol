@@ -17,7 +17,7 @@ contract CapitalETH {
     mapping(uint => address) public idToAddress;       //Mapping of SIP id to user address
 
     enum Status{ active, paused }
-    uint totalSIPCount;
+    uint public totalSIPCount;
 
     //Structure of the SIP Plan
     struct Plan {
@@ -51,6 +51,7 @@ contract CapitalETH {
     constructor() public {
         owner = msg.sender;
         processors[owner] = true;
+        totalSIPCount = 0;
     }
 
     receive() external payable { }
@@ -77,7 +78,7 @@ contract CapitalETH {
                         uint amount
                     ) public returns (uint) {
 
-        uint planId = totalSIPCount++;
+        uint planId = totalSIPCount;
 
         plans.push(Plan(planId, srcAccount, destAccount, srcToken, destToken, period, Status.active, amount, now));
 

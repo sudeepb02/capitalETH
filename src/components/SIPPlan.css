@@ -2,8 +2,15 @@
   height: 350px;
   width: 300px;
   max-width: 400px;
-  border-radius: 20px;
-  background: gray;
+  border-radius: 10px;
+  /* background-image: linear-gradient(to top, #dfe9f3 0%, white 100%); */
+  background-image: linear-gradient(
+    to top,
+    #f3e7e9 0%,
+    #e3eeff 99%,
+    #e3eeff 100%
+  );
   padding: 10px;
   margin: 15px;
+  box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 25px 0 rgba(0, 0, 0, 0.19);
 }

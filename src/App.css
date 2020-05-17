@@ -1,8 +1,22 @@
-.App { 
-    text-align: center;
+.App {
+  text-align: center;
 }
 
-body{
-    margin:0px;
-    padding:0px;
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+button {
+  background-color: rgb(83, 42, 150);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.8rem;
+  margin: 4px 2px;
+  cursor: pointer;
 }

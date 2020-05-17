@@ -36,7 +36,7 @@ function Nav() {
         <Link to="/process">
           <li>Process</li>
         </Link>
-        <button onClick={connect}>
+        <button className="connect-button" onClick={connect}>
           {isConnected ? 'Connected' : 'Connect'}
         </button>
       </ul>

@@ -5,6 +5,9 @@ nav {
   min-height: 8vh;
   /* background-color: #5d4594; */
   background: linear-gradient(to left, rgb(230, 106, 213), rgb(112, 101, 214));
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
 }
 
 .logo {
@@ -38,4 +41,21 @@ nav {
   text-transform: uppercase;
   font-size: 1rem;
   color: white;
+}
+
+.connect-button {
+  background-color: rgb(83, 42, 150);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.8rem;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 25px 0 rgba(0, 0, 0, 0.19);
 }

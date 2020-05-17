@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Web3Context } from './Web3Context'
 import CapitalETH from '../abis/CapitalETH.json'
-import { SIPPlan, NewSIPPlan } from './SIPPlan'
+import { SIPPlan } from './SIPPlan'
+import { NewSIPPlan } from './NewSIPPlan'
+import './Dashboard.css'
 
 function Dashboard() {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
-  const CAPITAL_ETH_ROPSTEN = '0x1a00C6e0255445869C1CF1C3651085b8C8a7E27e'
+  const CAPITAL_ETH_ROPSTEN = '0x0675b056FD826aFa78B11776E18E9e4b9d4eF4B6'
   const CAPITAL_ETH_LOCAL = '0x0Eb8dCf3034d1fD26fd22E1BC787aCA7b4a51b87'
 
   const [plans, setPlans] = useState([])
@@ -46,7 +48,7 @@ function Dashboard() {
     <div>
       <h1>Dashboard</h1>
       {isConnected ? (
-        <div>
+        <div className="plans-container">
           <NewSIPPlan />
           {plans.map((plan) => (
             <SIPPlan data={plan} key={plan.id} />

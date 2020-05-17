@@ -1,40 +1,41 @@
 nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    min-height: 10vh;
-    background-color:#5d4594;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 8vh;
+  /* background-color: #5d4594; */
+  background: linear-gradient(to left, rgb(230, 106, 213), rgb(112, 101, 214));
 }
 
 .logo {
-	color: #f1eded;
-	letter-spacing: 2px;
-	font-size: 30px;
-	font-family: 'Baloo 2', cursive;	
-	font-weight: 600;
+  color: #f1eded;
+  letter-spacing: 2px;
+  font-size: 2rem;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 600;
 }
 
 .logo a {
-	text-decoration: none;
-	color: #f1eded;
+  text-decoration: none;
+  color: #f1eded;
 }
 
 .nav-links {
-    width: 25%;
-    display: flex;
-    justify-content: space-around;
-	align-items: center;
-	font-family: 'Baloo 2', cursive;
-	font-weight: 400;;
+  width: 25%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 400;
 }
 
 .nav-links li {
-	list-style: none;
+  list-style: none;
 }
 
 .nav-links a {
-	text-decoration: none;
-	text-transform: uppercase;
-	font-size: 20px;
-	color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1rem;
+  color: white;
 }

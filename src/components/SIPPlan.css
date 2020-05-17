@@ -1,17 +1,9 @@
 .plan {
-  height: fit-content;
-  width: fit-content;
+  height: 350px;
+  width: 300px;
   max-width: 400px;
   border-radius: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
   background: gray;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.new-plan {
-  display: flex;
-  flex-wrap: wrap;
+  padding: 10px;
+  margin: 15px;
 }

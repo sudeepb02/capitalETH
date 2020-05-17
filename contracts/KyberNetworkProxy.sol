@@ -1,13 +1,18 @@
 pragma solidity ^0.6.0;
 
-import "./ERC20Interface.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /// @title Kyber Network interface
 interface KyberNetworkProxyInterface {
+
     function maxGasPrice() external view returns(uint);
+
     function getUserCapInWei(address user) external view returns(uint);
+
     function getUserCapInTokenWei(address user, ERC20 token) external view returns(uint);
+
     function enabled() external view returns(bool);
+
     function info(bytes32 id) external view returns(uint);
 
     function getExpectedRate(ERC20 src, ERC20 dest, uint srcQty) external view

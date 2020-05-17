@@ -1,16 +1,16 @@
 pragma solidity ^0.6.0;
 
 
-import "./ERC20Interface.sol";
+// import "./ERC20Interface.sol";
 import "./KyberNetworkProxy.sol";
 import "./ILendingPool.sol";
 import "./ILendingPoolAddressesProvider.sol";
 import "./ATokenInterface.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract CapitalETH {
-
-    address payable public owner;
+contract CapitalETH is Ownable {
 
     mapping(address => bool) public processors;        //Mapping of all valid SIP processors
     mapping(address => uint) public userSIPCount;      //Mapping of Address to SIP count
@@ -49,8 +49,7 @@ contract CapitalETH {
     ILendingPool public aaveLendingPool;
 
     constructor() public {
-        owner = msg.sender;
-        processors[owner] = true;
+        processors[msg.sender] = true;
         totalSIPCount = 0;
     }
 
@@ -149,9 +148,8 @@ contract CapitalETH {
 * Kyber Network contract functions
 /******************************************************************************
 */
-    function setKyberNetworkProxyContract(address newContractAddress) public returns (bool) {
+    function setKyberNetworkProxyContract(address newContractAddress) public onlyOwner returns (bool) {
 
-        require(msg.sender == owner, "Not authorized to call this function");
         address oldAddress = address(kyberNetworkProxyContract);
         kyberNetworkProxyContract = KyberNetworkProxyInterface(newContractAddress);
         emit updateKyberNetworkProxyContract(oldAddress, newContractAddress);
@@ -190,7 +188,7 @@ contract CapitalETH {
             destAccount,
             maxDestAmount,
             minConversionRate,
-            owner
+            owner()
         );
 
         // Log the event
@@ -203,7 +201,7 @@ contract CapitalETH {
 /******************************************************************************
 */
 
-    function setAaveAddress(address lendingPoolAddressProvider) public returns (bool) {
+    function setAaveAddress(address lendingPoolAddressProvider) public onlyOwner returns (bool) {
 
         aaveAddressProvider = ILendingPoolAddressesProvider(lendingPoolAddressProvider);
         aaveLendingPool = ILendingPool(aaveAddressProvider.getLendingPool());

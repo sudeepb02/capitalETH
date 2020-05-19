@@ -1,18 +1,14 @@
-import React, { useState, useContext, createContext } from 'react';
+import React, { useState, createContext } from 'react'
 
-export const Web3Context = createContext();
+export const Web3Context = createContext()
 
 export const Web3Provider = (props) => {
+  const [web3, setWeb3] = useState({})
+  const [account, setAccount] = useState('')
 
-	// const [account, setAccount] = useState('');
-	const [web3, setWeb3] = useState({});
-	const [account, setAccount] = useState('');
-	
-	return (
-		<Web3Context.Provider value={[web3, setWeb3, account, setAccount]}>
-			{props.children}
-		</Web3Context.Provider>
-
-	)
-
+  return (
+    <Web3Context.Provider value={[web3, setWeb3, account, setAccount]}>
+      {props.children}
+    </Web3Context.Provider>
+  )
 }

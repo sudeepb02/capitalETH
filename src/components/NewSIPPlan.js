@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react'
+import Select from 'react-select'
 import './SIPPlan.css'
 import CapitalETH from '../abis/CapitalETH.json'
 import { Web3Context } from './Web3Context'
+import { SRC_TOKENS_ROPSTEN, DEST_TOKENS_ROPSTEN } from '../utils/tokenAddress'
 
 export const NewSIPPlan = () => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
@@ -17,12 +19,12 @@ export const NewSIPPlan = () => {
     setDestAccount(e.target.value)
   }
 
-  const updateSrcToken = (e) => {
-    setSrcToken(e.target.value)
+  const updateSrcToken = (inputValue) => {
+    setSrcToken(inputValue.value)
   }
 
-  const updateDestToken = (e) => {
-    setDestToken(e.target.value)
+  const updateDestToken = (inputValue) => {
+    setDestToken(inputValue.value)
   }
 
   const updateAmount = (e) => {
@@ -65,22 +67,12 @@ export const NewSIPPlan = () => {
         <br />
 
         <label htmlFor="srcToken">Source Token</label>
-        <input
-          type="text"
-          name="srcToken"
-          value={srcToken}
-          onChange={updateSrcToken}
-        />
+        <Select options={SRC_TOKENS_ROPSTEN} onChange={updateSrcToken} />
         <br />
         <br />
 
         <label htmlFor="destToken">Destination Token</label>
-        <input
-          type="text"
-          name="destToken"
-          value={destToken}
-          onChange={updateDestToken}
-        />
+        <Select options={DEST_TOKENS_ROPSTEN} onChange={updateDestToken} />
         <br />
         <br />
 

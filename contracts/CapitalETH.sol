@@ -1,7 +1,6 @@
 pragma solidity ^0.6.0;
 
 
-// import "./ERC20Interface.sol";
 import "./KyberNetworkProxy.sol";
 import "./ILendingPool.sol";
 import "./ILendingPoolAddressesProvider.sol";
@@ -11,13 +10,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 
 contract CapitalETH is Ownable {
-
-    mapping(address => bool) public processors;        //Mapping of all valid SIP processors
-    mapping(address => uint) public userSIPCount;      //Mapping of Address to SIP count
-    mapping(uint => address) public idToAddress;       //Mapping of SIP id to user address
-
-    enum Status{ active, paused }
-    uint public totalSIPCount;
 
     //Structure of the SIP Plan
     struct Plan {
@@ -30,15 +22,23 @@ contract CapitalETH is Ownable {
         address srcToken;           //Address of source Token (ERC20)
         address destToken;          //Address of destination Token (ERC20)
 
-        uint period;        //Number of days between deduction
-        Status status;      //Status of the investment plan
+        bool isActive;              //Status of the investment plan
+        bool interestEnabled;       //Enabled if interest bearing ATokens is enabled
+        uint frequency;             //Time between installments
+        uint amount;                //Amount in Tokens to be deducted at every installment  (18 decimals)
 
-        uint amount;        //Amount to be deducted every period interval (18 decimals)
+        uint createdAt;     //Timestamp when the plan was created
         uint lastTx;        //Timestamp of the last transaction
     }
 
     //Array of SIPs to store all the SIPs
     Plan[] public plans;
+
+    mapping(address => bool) public processors;        //Mapping of all valid SIP processors
+    mapping(address => uint) public userSIPCount;      //Mapping of Address to SIP count
+    mapping(uint => address) public idToAddress;       //Mapping of SIP id to user address
+
+    uint public totalSIPCount;
 
     //Kyber Network Proxy contract address to swap tokens
     KyberNetworkProxyInterface public kyberNetworkProxyContract;
@@ -48,44 +48,89 @@ contract CapitalETH is Ownable {
     ILendingPoolAddressesProvider public aaveAddressProvider;
     ILendingPool public aaveLendingPool;
 
-    constructor() public {
-        processors[msg.sender] = true;
-        totalSIPCount = 0;
-    }
-
-    receive() external payable { }
-    fallback() external payable { }
-
     //Events
-    event newSIPCreated(uint id, address indexed srcAccount);
+    event newSIPCreated(
+        uint id,
+        address indexed srcAccount,
+        address indexed destAccount,
+        address srcToken,
+        address destToken,
+        uint amount
+    );
+
     // SIPUpdated();
     // installmentReceived();
-    event updateKyberNetworkProxyContract(address indexed oldAddress, address indexed newContractAddress);
+    event updateKyberNetworkProxyContract(
+        address indexed oldAddress, 
+        address indexed newContractAddress
+    );
 
     event tokensSwapped(
         address indexed srcAccount,
         ERC20 srcToken,
         address indexed destAccount,
         ERC20 destToken,
-        uint srcQty);
+        uint srcQty
+    );
 
-    function createSIP( address payable srcAccount,
-                        address payable destAccount,
-                        address srcToken,
-                        address destToken,
-                        uint period,
-                        uint amount
-                    ) public returns (uint) {
+    receive() external payable { }
+    fallback() external payable { }
 
+    constructor() public {
+        processors[msg.sender] = true;
+        totalSIPCount = 0;
+    }
+
+    function createSIP(
+        address payable destAccount,
+        address srcToken,
+        address destToken,
+        bool interestEnabled,
+        uint frequency,
+        uint amount
+    ) 
+        public 
+        returns (uint)
+    {
         uint planId = totalSIPCount;
 
-        plans.push(Plan(planId, srcAccount, destAccount, srcToken, destToken, period, Status.active, amount, now));
+        if (interestEnabled) {
+            //Get ATokens for srcToken and transfer them to user address
+            address aTokenAddress = getInterestBearingATokens(
+                srcToken,
+                amount,
+                aaveRef
+            );
+            srcToken = aTokenAddress;
+        }
 
-        userSIPCount[srcAccount]++;
-        idToAddress[planId] = srcAccount;
+        plans.push(Plan(
+            planId,
+            msg.sender,
+            destAccount, 
+            srcToken, 
+            destToken,
+            true,
+            interestEnabled,
+            frequency,
+            amount,
+            now,
+            now
+        ));
+
+        userSIPCount[msg.sender]++;
+        idToAddress[planId] = msg.sender;
         totalSIPCount++;
 
-        emit newSIPCreated(planId, srcAccount);
+        emit newSIPCreated(
+            planId,
+            msg.sender,
+            destAccount,
+            srcToken,
+            destToken,
+            amount
+        );
+        return planId;
     }
 
     // function processMultipleSIPs(uint[] memory planIDs) public {
@@ -107,31 +152,48 @@ contract CapitalETH is Ownable {
         // require(processors[msg.sender], "Only valid processors can trigger installments");
 
         Plan memory userPlan = plans[sipID];
+        address srcAccount = userPlan.srcAccount;
+
+        //Check if interesEnabled
+        if (userPlan.interestEnabled) {
+
+            ERC20(userPlan.srcToken).transferFrom(
+                srcAccount,
+                address(this),
+                userPlan.amount
+            );       
+            //Redeem underlying tokens. The underlying token is transferred to this contract
+            AToken(userPlan.srcToken).redeem(userPlan.amount);
+
+            //Get underlying token address
+            address underlyingToken = AToken(userPlan.srcToken).underlyingAssetAddress();
+            ERC20(underlyingToken).approve(address(this), userPlan.amount);
+            srcAccount = address(this);            
+        }
+
         swapTokensUsingKyber(
-            userPlan.srcAccount,
+            srcAccount,
             ERC20(userPlan.srcToken),
             userPlan.destAccount,
             ERC20(userPlan.destToken),
             userPlan.amount,
-            100 * 1e18);
+            10 * userPlan.amount
+        );
     }
 
     function pauseSIP(uint id) public returns (bool) {
         require(msg.sender == plans[id].srcAccount, "Not authorized to change SIP status");
-
-        require(plans[id].status == Status.active, "Plan not active");
-
-        //Pause the status of SIP
-        plans[id].status = Status.paused;
+        require(plans[id].isActive, "Plan not active");
+        plans[id].isActive = false;
     }
 
     function getPlansByAddress(
         address srcAddress
     )
-    public
-    view
-    returns (uint[] memory) {
-
+        public
+        view
+        returns (uint[] memory) 
+    {
         uint[] memory result = new uint[](userSIPCount[srcAddress]);
         uint index = 0;
         for (uint i = 0; i < plans.length; i++) {
@@ -148,12 +210,17 @@ contract CapitalETH is Ownable {
 * Kyber Network contract functions
 /******************************************************************************
 */
-    function setKyberNetworkProxyContract(address newContractAddress) public onlyOwner returns (bool) {
-
+    function setKyberNetworkProxyContract(
+        address newContractAddress
+    )
+        public
+        onlyOwner
+        returns (bool)
+    {
         address oldAddress = address(kyberNetworkProxyContract);
         kyberNetworkProxyContract = KyberNetworkProxyInterface(newContractAddress);
+        return true;
         emit updateKyberNetworkProxyContract(oldAddress, newContractAddress);
-
     }
 
     function swapTokensUsingKyber(
@@ -163,8 +230,9 @@ contract CapitalETH is Ownable {
         ERC20 destToken,
         uint srcQty,
         uint maxDestAmount
-    ) public {
-
+    )
+        public
+    {
         uint minConversionRate;
         require(srcToken.transferFrom(
             srcAccount,
@@ -188,7 +256,7 @@ contract CapitalETH is Ownable {
             destAccount,
             maxDestAmount,
             minConversionRate,
-            owner()
+            address(0)
         );
 
         // Log the event
@@ -200,20 +268,25 @@ contract CapitalETH is Ownable {
 * Aave contract functions
 /******************************************************************************
 */
-
-    function setAaveAddress(address lendingPoolAddressProvider) public onlyOwner returns (bool) {
-
+    function setAaveAddress(
+        address lendingPoolAddressProvider
+    )
+        public
+        onlyOwner
+        returns (bool)
+    {
         aaveAddressProvider = ILendingPoolAddressesProvider(lendingPoolAddressProvider);
         aaveLendingPool = ILendingPool(aaveAddressProvider.getLendingPool());
-
     }
 
     function getInterestBearingATokens(
         address srcToken,
         uint amount,
         uint16 ref
-    ) public returns (bool) {
-
+    ) 
+        public
+        returns (address)
+    {
         //Transfer source token from user to this contract
         ERC20(srcToken).transferFrom(msg.sender, address(this), amount);
 
@@ -228,17 +301,18 @@ contract CapitalETH is Ownable {
         (, , , , , , , , , , , aTokenAddress, ) = aaveLendingPool.getReserveData(srcToken);
 
         require(ERC20(aTokenAddress).approve(address(this), amount), "Error approving");
-
         require(ERC20(aTokenAddress).transferFrom(address(this), msg.sender, amount), "Error transferring tokens");
+
+        return aTokenAddress;
     }
 
     function getUnderlyingToken(
         address aTokenAddress,
         uint amount
     )
-    public
-    returns (bool) {
-
+        public
+        returns (bool)
+    {
         ERC20(aTokenAddress).transferFrom(msg.sender, address(this), amount);
 
         //Redeem underlying tokens. The underlying token is transferred to this contract
@@ -246,11 +320,7 @@ contract CapitalETH is Ownable {
 
         //Get underlying token address
         address underlyingToken = AToken(aTokenAddress).underlyingAssetAddress();
-
         ERC20(underlyingToken).approve(address(this), amount);
-
         ERC20(underlyingToken).transferFrom(address(this), msg.sender, amount);
-
     }
-
 }

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import Select from 'react-select'
+import { useAlert } from 'react-alert'
 import './SIPPlan.css'
 import CapitalETH from '../abis/CapitalETH.json'
 import ERC20 from '../abis/ERC20.json'
@@ -17,6 +18,7 @@ export const NewSIPPlan = () => {
   const [period, setPeriod] = useState('')
   const BN = web3.utils.BN
   const ONE_TOKEN = new BN(10).pow(new BN(18))
+  const alert = useAlert()
 
   const updateDestAccount = (e) => {
     setDestAccount(e.target.value)
@@ -56,6 +58,20 @@ export const NewSIPPlan = () => {
     const txStatus = await ERC20Instance.methods
       .approve(CAPITAL_ETH_ROPSTEN, new BN(1000).mul(ONE_TOKEN))
       .send({ from: accounts[0] })
+      .on('transactionHash', function (hash) {
+        alert.info('Please wait while transaction is included in a block!', {
+          title: 'Transaction submitted!',
+          actions: [
+            {
+              copy: 'Check on Etherscan',
+              onClick: () => console.log('View on Etherscan'),
+            },
+          ],
+        })
+      })
+      .on('receipt', function () {
+        alert.success('Transaction successful!')
+      })
   }
 
   const createNewSIP = async () => {
@@ -76,6 +92,20 @@ export const NewSIPPlan = () => {
         new BN(amount).mul(ONE_TOKEN),
       )
       .send({ from: accounts[0] })
+      .on('transactionHash', function (hash) {
+        alert.info('Please wait while transaction is included in a block!', {
+          title: 'Transaction submitted!',
+          actions: [
+            {
+              copy: 'Check on Etherscan',
+              onClick: () => console.log('View on Etherscan'),
+            },
+          ],
+        })
+      })
+      .on('receipt', function () {
+        alert.success('Transaction successful!')
+      })
   }
 
   return (

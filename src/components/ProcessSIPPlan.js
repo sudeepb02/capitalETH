@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useAlert } from 'react-alert'
 import { Web3Context } from './Web3Context'
 import CapitalETH from '../abis/CapitalETH.json'
 import './SIPPlan.css'
@@ -7,6 +8,7 @@ export const ProcessSIPPlan = (props) => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
   const CAPITAL_ETH_LOCAL = '0x0Eb8dCf3034d1fD26fd22E1BC787aCA7b4a51b87'
   const CAPITAL_ETH_ROPSTEN = '0xF1Cd333AD3306e9B8A4fBF29b435Fe5931bE5f06'
+  const alert = useAlert()
 
   const processSIP = async () => {
     const capitalETHInstance = new web3.eth.Contract(
@@ -19,6 +21,20 @@ export const ProcessSIPPlan = (props) => {
     const txStatus = await capitalETHInstance.methods
       .processSingleSIP(props.data.id)
       .send({ from: accounts[0] })
+      .on('transactionHash', function (hash) {
+        alert.info('Please wait while transaction is included in a block!', {
+          title: 'Transaction submitted!',
+          actions: [
+            {
+              copy: 'Check on Etherscan',
+              onClick: () => console.log('View on Etherscan'),
+            },
+          ],
+        })
+      })
+      .on('receipt', function () {
+        alert.success('Transaction successful!')
+      })
   }
 
   return (

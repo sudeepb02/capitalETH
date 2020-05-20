@@ -56,6 +56,7 @@
   width: fit-content;
   height: fit-content;
   align-content: center;
+  cursor: pointer;
 }
 
 .web3-box:hover {

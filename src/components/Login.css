@@ -66,3 +66,9 @@
 .container {
   padding: 2px 16px;
 }
+
+.address-navbar {
+  background-color: lightgrey;
+  border-radius: 25px;
+  padding: 5px 10px;
+}

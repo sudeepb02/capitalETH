@@ -30,20 +30,14 @@ const Process = () => {
     const totalSIPCount = await capitalETHInstance.methods
       .totalSIPCount()
       .call()
-    console.log(totalSIPCount)
+    // console.log(totalSIPCount)
 
     let userPlan
     for (let index = 0; index < totalSIPCount; index++) {
       userPlan = await capitalETHInstance.methods.plans(index).call()
-      console.log(userPlan)
+      // console.log(userPlan)
       setPlans((prevPlans) => [...prevPlans, userPlan])
     }
-    // let userPlan
-    // userPlanIDs.map(async (planID) => {
-    //   userPlan = await capitalETHInstance.methods.plans(planID).call()
-    //   console.log(userPlan)
-    //   setPlans((prevPlans) => [...prevPlans, userPlan])
-    // })
   }
 
   return (

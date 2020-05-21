@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import Portis from '@portis/web3'
 import Web3 from 'web3'
 import { Web3Context } from './Web3Context'
+import Address from './Address'
 import './Nav.css'
 import './Login.css'
 import metamasklogo from '../assets/metamask-logo.png'
@@ -46,9 +47,16 @@ const Login = () => {
 
   return (
     <div>
-      <button className="connect-button" onClick={() => setModalIsOpen(true)}>
-        {isConnected ? 'Connected' : 'Connect'}
-      </button>
+      {!isConnected ? (
+        <button className="connect-button" onClick={() => setModalIsOpen(true)}>
+          Connect
+        </button>
+      ) : (
+        <div className="address-navbar">
+          <Address value={account} size="short" />
+        </div>
+      )}
+
       <Modal
         className="login-modal"
         overlayClassName="login-overlay-modal"

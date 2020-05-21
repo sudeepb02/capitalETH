@@ -1,4 +1,5 @@
 import React from 'react'
+import Address from './Address'
 import './SIPPlan.css'
 
 export function SIPPlan(props) {
@@ -6,8 +7,13 @@ export function SIPPlan(props) {
     <div className="plan">
       <p>Plan ID: {props.data.id}</p>
       <p>Status: {props.data.status}</p>
-      <p>Source Account: {props.data.srcAccount}</p>
-      <p>Destination Account: {props.data.destAccount}</p>
+      <p>
+        Source Account: <Address value={props.data.srcAccount} size="short" />
+      </p>
+      <p>
+        Destination Account:
+        <Address value={props.data.destAccount} size="short" />
+      </p>
       <p>Source Token: {props.data.srcToken}</p>
       <p>Destination Token: {props.data.destToken}</p>
       <p>Amount: {props.data.amount}</p>

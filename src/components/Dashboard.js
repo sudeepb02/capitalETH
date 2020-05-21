@@ -32,14 +32,14 @@ function Dashboard() {
     const userPlanIDs = await capitalETHInstance.methods
       .getPlansByAddress(account)
       .call()
-    console.log(userPlanIDs)
+    // console.log(userPlanIDs)
 
     // setPlans(data)
     // userPlanIDs.map
     let userPlan
     userPlanIDs.map(async (planID) => {
       userPlan = await capitalETHInstance.methods.plans(planID).call()
-      console.log(userPlan)
+      // console.log(userPlan)
       setPlans((prevPlans) => [...prevPlans, userPlan])
     })
   }

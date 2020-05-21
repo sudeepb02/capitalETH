@@ -24,10 +24,12 @@ export const NewSIPPlan = () => {
     setDestAccount(e.target.value)
   }
 
+  //Using React select
   const updateSrcToken = (inputValue) => {
     setSrcToken(inputValue.value)
   }
 
+  //Using React select
   const updateDestToken = (inputValue) => {
     setDestToken(inputValue.value)
   }

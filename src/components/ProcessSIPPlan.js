@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useAlert } from 'react-alert'
 import { Web3Context } from './Web3Context'
+import Address from './Address'
 import CapitalETH from '../abis/CapitalETH.json'
 import './SIPPlan.css'
 
@@ -41,8 +42,13 @@ export const ProcessSIPPlan = (props) => {
     <div className="plan">
       <p>Plan ID: {props.data.id}</p>
       <p>Status: {props.data.isActive ? 'Active' : 'Paused'}</p>
-      <p>Source Account: {props.data.srcAccount}</p>
-      <p>Destination Account: {props.data.destAccount}</p>
+      <p>
+        Source Account: <Address value={props.data.srcAccount} size="short" />
+      </p>
+      <p>
+        Destination Account:{' '}
+        <Address value={props.data.destAccount} size="short" />
+      </p>
       <p>Source Token: {props.data.srcToken}</p>
       <p>Destination Token: {props.data.destToken}</p>
       <p>Amount: {props.data.amount}</p>

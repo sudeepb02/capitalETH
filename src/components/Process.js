@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Web3Context } from './Web3Context'
+import { CAPITALETH_ROPSTEN } from '../utils/deployedAddress'
 import CapitalETH from '../abis/CapitalETH.json'
 import { ProcessSIPPlan } from './ProcessSIPPlan'
 import './Dashboard.css'
 
 const Process = () => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
-  const CAPITAL_ETH_ROPSTEN = '0xF1Cd333AD3306e9B8A4fBF29b435Fe5931bE5f06'
-  const CAPITAL_ETH_LOCAL = '0x0Eb8dCf3034d1fD26fd22E1BC787aCA7b4a51b87'
 
   const [plans, setPlans] = useState([])
   const [isConnected, setIsConnected] = useState(false)
@@ -24,7 +23,7 @@ const Process = () => {
   const fetchPlans = async () => {
     const capitalETHInstance = new web3.eth.Contract(
       CapitalETH.abi,
-      CAPITAL_ETH_ROPSTEN,
+      CAPITALETH_ROPSTEN,
     )
 
     const totalSIPCount = await capitalETHInstance.methods

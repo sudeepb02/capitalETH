@@ -14,3 +14,9 @@
   margin: 15px;
   box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 25px 0 rgba(0, 0, 0, 0.19);
 }
+
+.select-token {
+  width: 50%;
+  display: inline-block;
+  padding: 6px 12px;
+}

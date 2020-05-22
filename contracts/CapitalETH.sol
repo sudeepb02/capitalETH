@@ -7,9 +7,12 @@ import "./ILendingPoolAddressesProvider.sol";
 import "./ATokenInterface.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 contract CapitalETH is Ownable {
+
+    using SafeMath for uint256;
 
     //Structure of the SIP Plan
     struct Plan {
@@ -153,6 +156,7 @@ contract CapitalETH is Ownable {
 
         Plan memory userPlan = plans[sipID];
         address srcAccount = userPlan.srcAccount;
+        uint processorFee = calculateProcessorFee(userPlan.amount);
 
         //Check if interesEnabled
         if (userPlan.interestEnabled) {
@@ -171,20 +175,35 @@ contract CapitalETH is Ownable {
             srcAccount = address(this);            
         }
 
+        uint finalAmount = (userPlan.amount).sub(processorFee);
+
         swapTokensUsingKyber(
             srcAccount,
             ERC20(userPlan.srcToken),
             userPlan.destAccount,
             ERC20(userPlan.destToken),
-            userPlan.amount,
+            finalAmount,
             10 * userPlan.amount
         );
+
+        ERC20(userPlan.srcToken).transferFrom(srcAccount, msg.sender, processorFee);
     }
 
-    function pauseSIP(uint id) public returns (bool) {
+    function pauseSIP(uint id) public {
         require(msg.sender == plans[id].srcAccount, "Not authorized to change SIP status");
         require(plans[id].isActive, "Plan not active");
         plans[id].isActive = false;
+    }
+
+    function resumeSIP(uint id) public {
+        require(msg.sender == plans[id].srcAccount, "Not authorized to change SIP status");
+        require(!plans[id].isActive, "Plan already active");
+        plans[id].isActive = true;
+    }
+
+    function calculateProcessorFee(uint amount) public returns (uint) {
+        uint processorFee = 1e18;
+        return processorFee;
     }
 
     function getPlansByAddress(
@@ -311,7 +330,7 @@ contract CapitalETH is Ownable {
         uint amount
     )
         public
-        returns (bool)
+        returns (address)
     {
         ERC20(aTokenAddress).transferFrom(msg.sender, address(this), amount);
 
@@ -322,5 +341,6 @@ contract CapitalETH is Ownable {
         address underlyingToken = AToken(aTokenAddress).underlyingAssetAddress();
         ERC20(underlyingToken).approve(address(this), amount);
         ERC20(underlyingToken).transferFrom(address(this), msg.sender, amount);
+        return underlyingToken;
     }
 }

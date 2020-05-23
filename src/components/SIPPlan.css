@@ -3,6 +3,7 @@
   width: 300px;
   max-width: 400px;
   border-radius: 10px;
+  text-align: center;
   /* background-image: linear-gradient(to top, #dfe9f3 0%, white 100%); */
   background-image: linear-gradient(
     to top,
@@ -15,8 +16,46 @@
   box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 25px 0 rgba(0, 0, 0, 0.19);
 }
 
+.plan span {
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.highlight-color {
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .select-token {
-  width: 50%;
+  width: 30%;
   display: inline-block;
   padding: 6px 12px;
+}
+
+.create-modal {
+  text-align: center;
+  width: 50%;
+  height: 70%;
+  padding: 50px;
+  margin: auto;
+  border: 1px solid #ccc;
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+}
+
+.create-overlay-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.75);
 }

@@ -89,31 +89,30 @@
 /*
 ***********************
 */
-.vertical-steps li { 
-  display: flex; 
+.vertical-steps li {
+  display: flex;
 }
 
-.vertical-steps p { 
+.vertical-steps p {
   position: relative;
   /*position: fixed;*/
   color: #ccc;
-  padding: 0.5em 1.5em;  
+  padding: 0.5em 1.5em;
 }
 
-.vertical-steps p::after { 
-   content: "";
-   position: absolute;
-   z-index: 2;
-   right: 0;
-   top: 0;
-   transform: translateX(50%);
-   border-radius: 50%;
-   background: #fff;
-   border: 3px #ccc solid;
-   width: .8em;
-   height: .8em
+.vertical-steps p::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 0;
+  transform: translateX(50%);
+  border-radius: 50%;
+  background: #fff;
+  border: 3px #ccc solid;
+  width: 0.8em;
+  height: 0.8em;
 }
-
 
 .vertical-steps span {
   padding: 0 1.5em 1.5em 1.5em;
@@ -121,24 +120,29 @@
 }
 
 .vertical-steps span::before {
-   content: "";
-   position: absolute;
-   z-index: 1;
-   left: 0;
-   height: 100%;
-   border-left: 3px #ccc solid;
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  height: 100%;
+  border-left: 3px #ccc solid;
 }
 
 .vertical-steps strong {
-   display: block;
-   font-weight: bolder;
-     background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  display: block;
+  font-weight: bolder;
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.vertical-steps { margin: 2em; width: 80%; }
-.vertical-steps, 
-.vertical-steps *::before, 
-.vertical-steps *::after { box-sizing: border-box; }
+.vertical-steps {
+  margin: 2em;
+  width: 80%;
+}
+.vertical-steps,
+.vertical-steps *::before,
+.vertical-steps *::after {
+  box-sizing: border-box;
+}

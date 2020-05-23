@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import Select from 'react-select'
+import Modal from 'react-modal'
 import { useAlert } from 'react-alert'
 import './SIPPlan.css'
 import { CAPITALETH_ROPSTEN } from '../utils/deployedAddress'
@@ -8,13 +9,18 @@ import ERC20 from '../abis/ERC20.json'
 import { Web3Context } from './Web3Context'
 import { SRC_TOKENS_ROPSTEN, DEST_TOKENS_ROPSTEN } from '../utils/tokenAddress'
 
+Modal.setAppElement('#root')
+
 export const NewSIPPlan = () => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
+
   const [destAccount, setDestAccount] = useState('')
   const [srcToken, setSrcToken] = useState('')
   const [destToken, setDestToken] = useState('')
   const [amount, setAmount] = useState('')
   const [frequency, setFrequency] = useState('')
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+
   const BN = web3.utils.BN
   const ONE_TOKEN = new BN(10).pow(new BN(18))
   const alert = useAlert()
@@ -51,6 +57,11 @@ export const NewSIPPlan = () => {
     approveToken()
   }
 
+  const convertDaysToSeconds = (days) => {
+    var secondsInADay = 60 * 60 * 24
+    return days * secondsInADay
+  }
+
   const approveToken = async () => {
     const ERC20Instance = new web3.eth.Contract(ERC20.abi, srcToken)
 
@@ -66,7 +77,9 @@ export const NewSIPPlan = () => {
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => { window.open(url, "_blank")},
+              onClick: () => {
+                window.open(url, '_blank')
+              },
             },
           ],
         })
@@ -84,13 +97,15 @@ export const NewSIPPlan = () => {
 
     const accounts = await web3.eth.getAccounts()
 
+    var freq = convertDaysToSeconds(frequency)
+
     const txStatus = await capitalETHInstance.methods
       .createSIP(
         destAccount,
         srcToken,
         destToken,
         false,
-        frequency,
+        freq,
         new BN(amount).mul(ONE_TOKEN),
       )
       .send({ from: accounts[0] })
@@ -101,10 +116,13 @@ export const NewSIPPlan = () => {
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => { window.open(url, "_blank")},
+              onClick: () => {
+                window.open(url, '_blank')
+              },
             },
           ],
         })
+        setModalIsOpen(false)
       })
       .on('receipt', function () {
         alert.success('Transaction successful!')
@@ -112,59 +130,72 @@ export const NewSIPPlan = () => {
   }
 
   return (
-    <div className="plan">
-      <form>
-        <label htmlFor="destAccount">Destination Account</label>
-        <input
-          type="text"
-          name="destAccount"
-          value={destAccount}
-          onChange={updateDestAccount}
-        />
-        <br />
-        <br />
-
-        <label htmlFor="srcToken">Source Token</label>
-        <Select
-          options={SRC_TOKENS_ROPSTEN}
-          onChange={updateSrcToken}
-          className="select-token"
-        />
-        <br />
-        <br />
-
-        <label htmlFor="destToken">Destination Token</label>
-        <Select
-          options={DEST_TOKENS_ROPSTEN}
-          onChange={updateDestToken}
-          className="select-token"
-        />
-        <br />
-        <br />
-
-        <label htmlFor="amount">Amount</label>
-        <input
-          type="text"
-          name="amount"
-          value={amount}
-          onChange={updateAmount}
-        />
-        <br />
-        <br />
-
-        <label htmlFor="Frequency">Frequency</label>
-        <input
-          type="text"
-          name="frequency"
-          value={frequency}
-          onChange={updateFrequency}
-        />
-        <br />
-        <br />
-
-        <button onClick={triggerApprove}>Approve</button>
-        <button onClick={triggerCreateSIP}>Create</button>
-      </form>
+    <div>
+      <div className="plan" onClick={() => setModalIsOpen(true)}>
+        <h3 className="highlight-color">Create a new Plan</h3>
+        <h3 className="highlight-color">OR</h3>
+        <h3 className="highlight-color">Set a Goal</h3>
+      </div>
+      <div className="highlight-color">
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          className="create-modal"
+          overlayClassName="create-overlay-modal"
+        >
+          <h2 className="highlight-color">Set a Goal</h2>
+          <hr />
+          <br />
+          <form>
+            <span className="highlight-color">I would like to invest</span>
+            <br />
+            <span className="highlight-color">amount </span>
+            <input
+              type="text"
+              name="amount"
+              value={amount}
+              onChange={updateAmount}
+              placeholder="ex. 100"
+            />
+            <Select
+              options={SRC_TOKENS_ROPSTEN}
+              onChange={updateSrcToken}
+              className="select-token"
+            />
+            <br />
+            <span className="highlight-color">every </span>
+            <input
+              type="text"
+              name="frequency"
+              value={frequency}
+              placeholder="ex. 30"
+              onChange={updateFrequency}
+            />{' '}
+            <span className="highlight-color"> days</span>
+            <br />
+            <span className="highlight-color">to buy token </span>
+            <Select
+              options={DEST_TOKENS_ROPSTEN}
+              onChange={updateDestToken}
+              className="select-token"
+            />
+            <br />
+            <span className="highlight-color">
+              Deposit the tokens bought to address
+            </span>
+            <input
+              type="text"
+              name="destAccount"
+              value={destAccount}
+              onChange={updateDestAccount}
+              placeholder="0x....."
+            />
+          </form>
+          <button onClick={triggerApprove}>Approve</button>
+          <button onClick={triggerCreateSIP}>Create</button>
+          <button onClick={() => setModalIsOpen(false)}>Close</button>
+        </Modal>
+      </div>
     </div>
   )
 }

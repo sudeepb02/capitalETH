@@ -34,7 +34,9 @@ function Home() {
           <li className="active">Select Tokens</li>
           <li className="active">Select Amount & Frequency</li>
           <li className="active">Relax!!!</li>
-          <li className="active">Installment is processed and you receive destination tokens</li>
+          <li className="active">
+            Installment is processed and you receive destination tokens
+          </li>
         </ul>
       </div>
       <br />
@@ -45,45 +47,58 @@ function Home() {
       <hr />
 
       <div>
-      <h2 className="highlight-color">How it works?</h2><br/>        
+        <h2 className="highlight-color">How it works?</h2>
+        <br />
       </div>
 
       <div className="container-left">
         <ul class="vertical-steps">
           <li>
-            <p></p> 
-            <span><strong>Select plan details</strong>
-             While creating a plan, destination token, amount and other details are selected</span>
-             </li>
-          <li>
             <p></p>
-            <span><strong>Approve Source tokens</strong>
-            Approve source tokens to be used to buy destination tokens
-            </span></li>
-          <li>
-            <p></p> 
-            <span><strong>Create a new Goal/Plan</strong>
-            A new plan is created and marked active
+            <span>
+              <strong>Select plan details</strong>
+              While creating a plan, destination token, amount and other details
+              are selected
             </span>
-          </li>  
+          </li>
           <li>
             <p></p>
             <span>
-            <strong>All active plans are displayed</strong>
-            Anyone can view the active plans in the Process page</span></li>
+              <strong>Approve Source tokens</strong>
+              Approve source tokens to be used to buy destination tokens
+            </span>
+          </li>
           <li>
             <p></p>
-            <span><strong>installment is processed</strong>
-            Processors process the installment and pay gas for the transaction
-            </span></li>
+            <span>
+              <strong>Create a new Goal/Plan</strong>A new plan is created and
+              marked active
+            </span>
+          </li>
           <li>
             <p></p>
-            <span><strong>Receive destination Tokens in your wallet</strong>
-            You receive destination tokens in your wallet and a nominal fee is paid to the processor 
-            </span></li>
+            <span>
+              <strong>All active plans are displayed</strong>
+              Anyone can view the active plans in the Process page
+            </span>
+          </li>
+          <li>
+            <p></p>
+            <span>
+              <strong>installment is processed</strong>
+              Processors process the installment and pay gas for the transaction
+            </span>
+          </li>
+          <li>
+            <p></p>
+            <span>
+              <strong>Receive destination Tokens in your wallet</strong>
+              You receive destination tokens in your wallet and a nominal fee is
+              paid to the processor
+            </span>
+          </li>
         </ul>
-    </div>
-
+      </div>
     </div>
   )
 }

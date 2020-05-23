@@ -1,7 +1,38 @@
 .plans-container {
   display: flex;
+  text-align: left;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin-left: 60px;
-  margin-right: 60px;
+  justify-content: space-between;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+}
+
+.main-container {
+  margin-top: 150px;
+  max-width: 80%;
+  margin: auto;
+  /* text-align: left; */
+  font-size: 1.2rem;
+  color: dimgray;
+}
+
+.main-container h1 {
+  font-size: 3rem;
+}
+
+.main-container h2 {
+  font-size: 1.5rem;
+}
+
+.highlight-color {
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container-left {
+  margin: auto;
+  text-align: left;
+  font-size: 1.2rem;
 }

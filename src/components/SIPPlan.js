@@ -38,24 +38,36 @@ export function SIPPlan(props) {
       })
   }
 
+  const convertUnixTimeToDays = (unixTime) => {
+    const secondsInADay = 60 * 60 * 24
+    return (unixTime / secondsInADay).toFixed(2)
+  }
+
   return (
     <div className="plan">
-      <p>Plan ID: {props.data.id}</p>
-      <p>Status: {props.data.isActive ? 'Active' : 'Paused'}</p>
-      <p>
-        Source Account: <Address value={props.data.srcAccount} size="short" />
-      </p>
-      <p>
-        Destination Account:
-        <Address value={props.data.destAccount} size="short" />
-      </p>
-      <p>Source Token: {addressToTicker(props.data.srcToken)}</p>
-      <p>Destination Token: {addressToTicker(props.data.destToken)}</p>
-      <p>
-        Amount: {convertTokenAmount(props.data.amount)}{' '}
-        {addressToTicker(props.data.srcToken)}
-      </p>
-      <p>Frequency: {props.data.frequency}</p>
+      <h2>
+        Invest{' '}
+        <span>
+          {convertTokenAmount(props.data.amount)}{' '}
+          {addressToTicker(props.data.srcToken)}{' '}
+        </span>
+      </h2>
+      <h2>
+        every <span>{convertUnixTimeToDays(props.data.frequency)} days </span>
+      </h2>
+      <h2>
+        to buy Token <span>{addressToTicker(props.data.destToken)}</span>.{' '}
+      </h2>
+      <h2>Deposit tokens to address </h2>
+      <h2>
+        {' '}
+        <span>
+          <Address value={props.data.destAccount} size="short" />
+        </span>
+      </h2>
+      <h2>
+        Earn interest: <span>{props.data.interestEnabled ? 'Yes' : 'No'}</span>
+      </h2>
       {props.data.isActive ? (
         <button onClick={pausePlan}>Pause Plan</button>
       ) : (

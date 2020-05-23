@@ -141,4 +141,4 @@
 .vertical-steps { margin: 2em; width: 80%; }
 .vertical-steps, 
 .vertical-steps *::before, 
-.vertical-steps *::after { box-sizing: border-box; font-family: arial; }
+.vertical-steps *::after { box-sizing: border-box; }

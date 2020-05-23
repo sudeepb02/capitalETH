@@ -31,10 +31,7 @@ function Dashboard() {
     const userPlanIDs = await capitalETHInstance.methods
       .getPlansByAddress(account)
       .call()
-    // console.log(userPlanIDs)
 
-    // setPlans(data)
-    // userPlanIDs.map
     let userPlan
     userPlanIDs.map(async (planID) => {
       userPlan = await capitalETHInstance.methods.plans(planID).call()

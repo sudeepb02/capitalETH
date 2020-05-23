@@ -29,12 +29,13 @@ export const ProcessSIPPlan = (props) => {
       .processSingleSIP(props.data.id)
       .send({ from: accounts[0] })
       .on('transactionHash', function (hash) {
+        let url = 'https://ropsten.etherscan.io/tx/' + hash
         alert.info('Please wait while transaction is included in a block!', {
           title: 'Transaction submitted!',
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => console.log('View on Etherscan'),
+              onClick: () => { window.open(url, "_blank")},
             },
           ],
         })

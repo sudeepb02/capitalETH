@@ -60,12 +60,13 @@ export const NewSIPPlan = () => {
       .approve(CAPITALETH_ROPSTEN, new BN(1000).mul(ONE_TOKEN))
       .send({ from: accounts[0] })
       .on('transactionHash', function (hash) {
+        let url = 'https://ropsten.etherscan.io/tx/' + hash
         alert.info('Please wait while transaction is included in a block!', {
           title: 'Transaction submitted!',
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => console.log('View on Etherscan'),
+              onClick: () => { window.open(url, "_blank")},
             },
           ],
         })
@@ -94,12 +95,13 @@ export const NewSIPPlan = () => {
       )
       .send({ from: accounts[0] })
       .on('transactionHash', function (hash) {
+        let url = 'https://ropsten.etherscan.io/tx/' + hash
         alert.info('Please wait while transaction is included in a block!', {
           title: 'Transaction submitted!',
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => console.log('View on Etherscan'),
+              onClick: () => { window.open(url, "_blank")},
             },
           ],
         })

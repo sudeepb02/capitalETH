@@ -13,7 +13,7 @@ nav {
 .logo {
   color: #f1eded;
   letter-spacing: 2px;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-family: 'Baloo 2', cursive;
   font-weight: 600;
 }
@@ -24,7 +24,7 @@ nav {
 }
 
 .nav-links {
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -47,7 +47,7 @@ nav {
   background-color: rgb(83, 42, 150);
   border: none;
   color: white;
-  padding: 10px 15px;
+  padding: 8px 12px;
   text-transform: uppercase;
   text-align: center;
   text-decoration: none;

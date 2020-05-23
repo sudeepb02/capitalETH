@@ -8,6 +8,14 @@ body {
   padding: 0px;
 }
 
+hr {
+  height: 2px;
+  border-width: 0;
+  background-color: rgb(202, 210, 243);
+  opacity: 0.1;
+  /*width: 90%;*/
+}
+
 button {
   background-color: rgb(83, 42, 150);
   border: none;

@@ -1,0 +1,144 @@
+/*@import '~antd/dist/antd.css';*/
+
+.main-container {
+  margin-top: 150px;
+  max-width: 75%;
+  margin: auto;
+  /* text-align: left; */
+  font-size: 1.2rem;
+  color: dimgray;
+}
+
+.main-container h1 {
+  font-size: 3rem;
+}
+
+.main-container h2 {
+  font-size: 1.5rem;
+}
+
+.highlight-color {
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container-left {
+  margin: auto;
+  text-align: left;
+  font-size: 1.2rem;
+  color: dimgray;
+}
+
+.steps-container {
+  width: 600px;
+  margin: 50px auto;
+}
+
+.progressbar {
+  counter-reset: step;
+}
+
+.progressbar li {
+  list-style-type: none;
+  width: 25%;
+  float: left;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  /*text-transform: uppercase;*/
+  color: #7d7d7d;
+}
+.progressbar li:before {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: step;
+  line-height: 30px;
+  border: 2px solid #7d7d7d;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+}
+.progressbar li:after {
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  background-color: #7d7d7d;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+.progressbar li:first-child:after {
+  content: none;
+}
+.progressbar li.active {
+  color: green;
+}
+.progressbar li.active:before {
+  border-color: #55b776;
+}
+.progressbar li.active + li:after {
+  background-color: #55b776;
+}
+
+/*
+***********************
+*/
+.vertical-steps li { 
+  display: flex; 
+}
+
+.vertical-steps p { 
+  position: relative;
+  /*position: fixed;*/
+  color: #ccc;
+  padding: 0.5em 1.5em;  
+}
+
+.vertical-steps p::after { 
+   content: "";
+   position: absolute;
+   z-index: 2;
+   right: 0;
+   top: 0;
+   transform: translateX(50%);
+   border-radius: 50%;
+   background: #fff;
+   border: 3px #ccc solid;
+   width: .8em;
+   height: .8em
+}
+
+
+.vertical-steps span {
+  padding: 0 1.5em 1.5em 1.5em;
+  position: relative;
+}
+
+.vertical-steps span::before {
+   content: "";
+   position: absolute;
+   z-index: 1;
+   left: 0;
+   height: 100%;
+   border-left: 3px #ccc solid;
+}
+
+.vertical-steps strong {
+   display: block;
+   font-weight: bolder;
+     background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.vertical-steps { margin: 2em; width: 80%; }
+.vertical-steps, 
+.vertical-steps *::before, 
+.vertical-steps *::after { box-sizing: border-box; font-family: arial; }

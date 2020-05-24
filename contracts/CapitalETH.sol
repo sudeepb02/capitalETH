@@ -155,6 +155,9 @@ contract CapitalETH is Ownable {
         // require(processors[msg.sender], "Only valid processors can trigger installments");
 
         Plan memory userPlan = plans[sipID];
+
+        //Check if plan is available for processing - Commented for demo video
+        // require((userPlan.lastTx + userPlan.frequency) < now, "Plan not ready for processing");
         address srcAccount = userPlan.srcAccount;
         uint processorFee = calculateProcessorFee(userPlan.amount);
 
@@ -201,9 +204,14 @@ contract CapitalETH is Ownable {
         plans[id].isActive = true;
     }
 
-    function calculateProcessorFee(uint amount) public returns (uint) {
-        uint processorFee = 1e18;
-        return processorFee;
+    function calculateProcessorFee(uint amount) public pure returns (uint) {
+        uint processorFeePercent = 1e16;        //1 percent
+        uint oneToken = 1e18;
+        if (amount < oneToken.mul(100)) {
+            return oneToken;                     //If amount is less than 100 DAI, fixed fee of 1 DAI
+        } else {
+            return amount.mul(processorFeePercent);
+        }
     }
 
     function getPlansByAddress(
@@ -238,8 +246,8 @@ contract CapitalETH is Ownable {
     {
         address oldAddress = address(kyberNetworkProxyContract);
         kyberNetworkProxyContract = KyberNetworkProxyInterface(newContractAddress);
-        return true;
         emit updateKyberNetworkProxyContract(oldAddress, newContractAddress);
+        return true;
     }
 
     function swapTokensUsingKyber(

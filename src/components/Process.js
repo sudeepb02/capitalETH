@@ -9,6 +9,7 @@ const Process = () => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
 
   const [plans, setPlans] = useState([])
+  const [planFee, setPlanFee] = useState([])
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
@@ -32,25 +33,46 @@ const Process = () => {
     // console.log(totalSIPCount)
 
     let userPlan
+    let processorFee
     for (let index = 0; index < totalSIPCount; index++) {
       userPlan = await capitalETHInstance.methods.plans(index).call()
       // console.log(userPlan)
-      setPlans((prevPlans) => [...prevPlans, userPlan])
+      if (userPlan.isActive) {
+        setPlans((prevPlans) => [...prevPlans, userPlan])
+      }
+
+      processorFee = await capitalETHInstance.methods
+        .calculateProcessorFee(userPlan.amount)
+        .call()
+
+      setPlanFee((prevFees) => [...prevFees, processorFee])
     }
   }
 
   return (
-    <div>
-      <h1>Process SIPs</h1>
-      {isConnected ? (
-        <div className="plans-container">
-          {plans.map((plan) => (
-            <ProcessSIPPlan data={plan} key={plan.id} />
-          ))}
-        </div>
-      ) : (
-        <p>Please connect to web3 to view your dashboard</p>
-      )}
+    <div className="main-container">
+      <div className="container-left">
+        <h1 className="highlight-color">Process Plans</h1>
+        <h3 className="highlight-color">
+          Process installments of other users and collect fees
+        </h3>
+        <hr />
+        <h2 className="highlight-color">Available Plans</h2>
+        <hr />
+        {isConnected ? (
+          <div className="plans-container">
+            {plans.map((plan, idx) => (
+              <ProcessSIPPlan
+                data={plan}
+                key={plan.id}
+                processorFee={planFee[idx]}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>Please connect to web3 provider</p>
+        )}
+      </div>
     </div>
   )
 }

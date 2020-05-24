@@ -59,3 +59,28 @@
   bottom: 0;
   background-color: rgba(255, 255, 255, 0.75);
 }
+
+.process-plan {
+  height: 350px;
+  width: 300px;
+  max-width: 400px;
+  border-radius: 10px;
+  text-align: center;
+  /* background-image: linear-gradient(to top, #dfe9f3 0%, white 100%); */
+  background-image: linear-gradient(
+    to top,
+    #f3e7e9 0%,
+    #e3eeff 99%,
+    #e3eeff 100%
+  );
+  padding: 10px;
+  margin: 15px;
+  box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 25px 0 rgba(0, 0, 0, 0.19);
+}
+
+.process-plan span {
+  background: linear-gradient(to left, rgb(112, 101, 214), rgb(230, 106, 213));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

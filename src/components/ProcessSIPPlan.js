@@ -35,7 +35,9 @@ export const ProcessSIPPlan = (props) => {
           actions: [
             {
               copy: 'Check on Etherscan',
-              onClick: () => { window.open(url, "_blank")},
+              onClick: () => {
+                window.open(url, '_blank')
+              },
             },
           ],
         })
@@ -46,17 +48,22 @@ export const ProcessSIPPlan = (props) => {
   }
 
   return (
-    <div className="plan">
-      <p>Plan ID: {props.data.id}</p>
-      <p>Status: {props.data.isActive ? 'Active' : 'Paused'}</p>
-      <p>Source Token: {addressToTicker(props.data.srcToken)}</p>
-      <p>Destination Token: {addressToTicker(props.data.destToken)}</p>
-      <p>
-        Amount: {convertTokenAmount(props.data.amount)}{' '}
-        {addressToTicker(props.data.srcToken)}
-      </p>
-      <p>Frequency: {props.data.frequency}</p>
-      <p>Fees: </p>
+    <div className="process-plan">
+      <h2>Process installment of </h2>
+      <h2>
+        <span>
+          {convertTokenAmount(props.data.amount)}{' '}
+          {addressToTicker(props.data.srcToken)}
+        </span>
+      </h2>
+      <h2>and receive</h2>
+      <h2>
+        <span>
+          {convertTokenAmount(props.processorFee)}{' '}
+          {addressToTicker(props.data.srcToken)}
+        </span>
+      </h2>
+      <h2>in Fees</h2>
       <button onClick={processSIP}>Process SIP</button>
     </div>
   )

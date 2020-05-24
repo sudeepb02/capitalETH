@@ -14,7 +14,7 @@ function Nav() {
           <li>Dashboard</li>
         </Link>
         <Link to="/process">
-          <li>Process</li>
+          <li>Providers</li>
         </Link>
         <Login />
       </ul>

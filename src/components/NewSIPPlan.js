@@ -19,6 +19,7 @@ export const NewSIPPlan = () => {
   const [destToken, setDestToken] = useState('')
   const [amount, setAmount] = useState('')
   const [frequency, setFrequency] = useState('')
+  const [interestEnabled, setInterestEnabled] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const BN = web3.utils.BN
@@ -27,6 +28,14 @@ export const NewSIPPlan = () => {
 
   const updateDestAccount = (e) => {
     setDestAccount(e.target.value)
+  }
+
+  const updateInterestEnabled = (e) => {
+    if (e.target.checked) {
+      setInterestEnabled(true)
+    } else {
+      setInterestEnabled(false)
+    }
   }
 
   //Using React select
@@ -68,7 +77,7 @@ export const NewSIPPlan = () => {
     const accounts = await web3.eth.getAccounts()
 
     const txStatus = await ERC20Instance.methods
-      .approve(CAPITALETH_ROPSTEN, new BN(1000).mul(ONE_TOKEN))
+      .approve(CAPITALETH_ROPSTEN, new BN(new BN(1000000000).mul(ONE_TOKEN)))
       .send({ from: accounts[0] })
       .on('transactionHash', function (hash) {
         let url = 'https://ropsten.etherscan.io/tx/' + hash
@@ -97,14 +106,14 @@ export const NewSIPPlan = () => {
 
     const accounts = await web3.eth.getAccounts()
 
-    var freq = convertDaysToSeconds(frequency)
+    var freq = Math.round(convertDaysToSeconds(frequency))
 
     const txStatus = await capitalETHInstance.methods
       .createSIP(
         destAccount,
         srcToken,
         destToken,
-        false,
+        interestEnabled,
         freq,
         new BN(amount).mul(ONE_TOKEN),
       )
@@ -131,10 +140,12 @@ export const NewSIPPlan = () => {
 
   return (
     <div>
-      <div className="plan" onClick={() => setModalIsOpen(true)}>
-        <h3 className="highlight-color">Create a new Plan</h3>
-        <h3 className="highlight-color">OR</h3>
-        <h3 className="highlight-color">Set a Goal</h3>
+      <div className="new-plan">
+        <div className="plan" onClick={() => setModalIsOpen(true)}>
+          <h3 className="highlight-color">Create a new Plan</h3>
+          <h3 className="highlight-color">OR</h3>
+          <h3 className="highlight-color">Set a Goal</h3>
+        </div>
       </div>
       <div className="highlight-color">
         <Modal
@@ -146,51 +157,62 @@ export const NewSIPPlan = () => {
           <h2 className="highlight-color">Set a Goal</h2>
           <hr />
           <br />
-          <form>
-            <span className="highlight-color">I would like to invest</span>
-            <br />
-            <span className="highlight-color">amount </span>
-            <input
-              type="text"
-              name="amount"
-              value={amount}
-              onChange={updateAmount}
-              placeholder="ex. 100"
-            />
-            <Select
-              options={SRC_TOKENS_ROPSTEN}
-              onChange={updateSrcToken}
-              className="select-token"
-            />
-            <br />
-            <span className="highlight-color">every </span>
-            <input
-              type="text"
-              name="frequency"
-              value={frequency}
-              placeholder="ex. 30"
-              onChange={updateFrequency}
-            />{' '}
-            <span className="highlight-color"> days</span>
-            <br />
-            <span className="highlight-color">to buy token </span>
-            <Select
-              options={DEST_TOKENS_ROPSTEN}
-              onChange={updateDestToken}
-              className="select-token"
-            />
-            <br />
-            <span className="highlight-color">
-              Deposit the tokens bought to address
-            </span>
-            <input
-              type="text"
-              name="destAccount"
-              value={destAccount}
-              onChange={updateDestAccount}
-              placeholder="0x....."
-            />
-          </form>
+          <h4>
+            <form>
+              <span>I would like to invest</span>
+              <br />
+              <span className="highlight-color">amount </span>
+              <input
+                type="text"
+                name="amount"
+                value={amount}
+                onChange={updateAmount}
+                placeholder="ex. 100"
+              />
+              <Select
+                options={SRC_TOKENS_ROPSTEN}
+                onChange={updateSrcToken}
+                className="select-token"
+              />
+              <br />
+              <span className="highlight-color">every </span>
+              <input
+                type="text"
+                name="frequency"
+                value={frequency}
+                placeholder="ex. 30"
+                onChange={updateFrequency}
+              />{' '}
+              <span className="highlight-color"> days</span>
+              <br />
+              <span className="highlight-color">to buy token </span>
+              <Select
+                options={DEST_TOKENS_ROPSTEN}
+                onChange={updateDestToken}
+                className="select-token"
+              />
+              <br />
+              <span>Deposit the tokens bought to </span>
+              <span className="highlight-color">address</span>
+              <input
+                type="text"
+                name="destAccount"
+                value={destAccount}
+                onChange={updateDestAccount}
+                placeholder="0x....."
+              />
+              <br />
+              <input
+                type="checkbox"
+                name="interestEnabled"
+                onChange={updateInterestEnabled}
+              />
+              <label for="interestEnabled">
+                Earn <span className="highlight-color">Interest</span> Using
+                <span className="highlight-color"> Aave</span>
+              </label>
+            </form>
+          </h4>
           <button onClick={triggerApprove}>Approve</button>
           <button onClick={triggerCreateSIP}>Create</button>
           <button onClick={() => setModalIsOpen(false)}>Close</button>

@@ -31,6 +31,8 @@ const Process = () => {
       .totalSIPCount()
       .call()
     // console.log(totalSIPCount)
+    var currentTime = Math.round(new Date().getTime() / 1000)
+    console.log(currentTime)
 
     let userPlan
     let processorFee
@@ -38,14 +40,14 @@ const Process = () => {
       userPlan = await capitalETHInstance.methods.plans(index).call()
       // console.log(userPlan)
       if (userPlan.isActive) {
+        //  && userPlan.lastTx + userPlan.frequency < currentTime - Commented for demo
         setPlans((prevPlans) => [...prevPlans, userPlan])
+        processorFee = await capitalETHInstance.methods
+          .calculateProcessorFee(userPlan.amount)
+          .call()
+
+        setPlanFee((prevFees) => [...prevFees, processorFee])
       }
-
-      processorFee = await capitalETHInstance.methods
-        .calculateProcessorFee(userPlan.amount)
-        .call()
-
-      setPlanFee((prevFees) => [...prevFees, processorFee])
     }
   }
 
@@ -61,16 +63,20 @@ const Process = () => {
         <hr />
         {isConnected ? (
           <div className="plans-container">
-            {plans.map((plan, idx) => (
-              <ProcessSIPPlan
-                data={plan}
-                key={plan.id}
-                processorFee={planFee[idx]}
-              />
-            ))}
+            {plans.length == 0 ? (
+              <p>No plans available at the moment</p>
+            ) : (
+              plans.map((plan, idx) => (
+                <ProcessSIPPlan
+                  data={plan}
+                  key={plan.id}
+                  processorFee={planFee[idx]}
+                />
+              ))
+            )}
           </div>
         ) : (
-          <p>Please connect to web3 provider</p>
+          <p>Please connect to a web3 provider</p>
         )}
       </div>
     </div>

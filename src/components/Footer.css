@@ -1,0 +1,9 @@
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 8vh;
+  color: white;
+  /* background-color: #5d4594; */
+  background: linear-gradient(to left, rgb(230, 106, 213), rgb(112, 101, 214));
+}

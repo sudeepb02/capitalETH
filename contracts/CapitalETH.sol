@@ -205,12 +205,12 @@ contract CapitalETH is Ownable {
     }
 
     function calculateProcessorFee(uint amount) public pure returns (uint) {
-        uint processorFeePercent = 1e16;        //1 percent
+        uint processorFeePercent = 100;        //(1 div 100)i.e 1 percent
         uint oneToken = 1e18;
         if (amount < oneToken.mul(100)) {
             return oneToken;                     //If amount is less than 100 DAI, fixed fee of 1 DAI
         } else {
-            return amount.mul(processorFeePercent);
+            return amount.div(processorFeePercent);
         }
     }
 

@@ -14,6 +14,7 @@
   /* text-align: left; */
   font-size: 1.2rem;
   color: dimgray;
+  min-height: 100%;
 }
 
 .main-container h1 {

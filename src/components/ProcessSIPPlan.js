@@ -10,11 +10,12 @@ export const ProcessSIPPlan = (props) => {
   const [web3, setWeb3, account, setAccount] = useContext(Web3Context)
   const alert = useAlert()
   const BN = web3.utils.BN
-  const ONE_TOKEN = new BN(10).pow(new BN(18))
+  const POINT_ZERO_ONE_TOKEN = new BN(10).pow(new BN(16))
 
   const convertTokenAmount = (amount) => {
-    let numberOfTokens = new BN(amount).div(ONE_TOKEN)
-    return numberOfTokens.toString()
+    var tokensString = new BN(amount).div(POINT_ZERO_ONE_TOKEN).toString()
+    var numberOfTokens = parseInt(tokensString)
+    return numberOfTokens / 100
   }
 
   const processSIP = async () => {

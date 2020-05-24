@@ -1,12 +1,7 @@
 import React from 'react'
-import { Steps, Divider } from 'antd'
 import './Home.css'
-// import 'antd/dist/antd.css'
-// import { getPrices } from '../utils/stats'
 
 function Home() {
-  const { Step } = Steps
-
   return (
     <div className="main-container">
       <h1 className="highlight-color">Welcome to capitalETH</h1>
@@ -21,10 +16,10 @@ function Home() {
         of compounding.
       </p>
       <h3>
-        If you invested <span className="highlight-color">$100</span> every
+        If you invested <span className="highlight-color">just $50</span> every
         month in <span className="highlight-color">ETH</span> for the last{' '}
-        <span className="highlight-color">1 year</span>,<br /> you would've got
-        <span className="highlight-color"> returns of 200% **</span>
+        <span className="highlight-color">2 years</span>,<br /> you could've got
+        <span className="highlight-color"> returns of almost 200% **</span>
       </h3>
       <hr />
       <br />

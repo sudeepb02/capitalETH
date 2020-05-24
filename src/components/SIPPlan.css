@@ -38,8 +38,8 @@
 
 .create-modal {
   text-align: center;
-  width: 50%;
-  height: 70%;
+  width: 60%;
+  height: 80%;
   padding: 50px;
   margin: auto;
   border: 1px solid #ccc;
@@ -83,4 +83,8 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.new-plan {
+  cursor: pointer;
 }

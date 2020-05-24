@@ -7,6 +7,7 @@ import Nav from './components/Nav'
 import Dashboard from './components/Dashboard'
 import Process from './components/Process'
 import Home from './components/Home'
+import Footer from './components/Footer'
 import { Web3Provider } from './components/Web3Context'
 
 const options = {
@@ -27,6 +28,7 @@ class App extends Component {
                   <Route path="/dashboard" component={Dashboard} />
                   <Route path="/process" component={Process} />
                 </Switch>
+                <Footer />
               </div>
             </Router>
           </div>

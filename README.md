@@ -20,3 +20,36 @@ Investing in decentralized cryptocurrencies has largely been ignored in the DeFi
 - Disciplined Saving
 - Long term gains
 - No need to monitor the market continously<br>
+
+## Deployment instructions
+
+The current repository has all the token address of Ropsten network. If you want to deploy to any other networks, or a local fork of main network, you need to change the token address (all tokens addresses are updated in the `src/utils` directory)
+
+To deploy:
+
+- Clone this repository
+- Run `npm install`
+- Deploy contracts using `truffle deploy [--network ropsten]` (You need to have a .secret file in the current directory with your mnemonic if deploying to any network other than local)
+- Update the contract deployed contract address
+- Set kyberNetworkProxyContract address and Aave address(Interest earning using Aave will only work on mainnet fork as both Kyber and Aave use different contract deployments for DAI)
+- `npm start`
+
+## Deployed App
+
+capitalETH is currently deployed on the Ropsten test network and [lives here](https://capitaleth.netlify.app/)
+
+### Home
+
+![capitalETH-1](./src/assets/ss01.png)
+
+### Investors Dashboard view
+
+![capitalETH-2](./src/assets/ss02.png)
+
+### Providers Process view
+
+![capitalETH-3](./src/assets/ss03.png)
+
+## Other details
+
+This project was built in less than 30 days for the ETHGlobal Hack Money Hackathon. I would really like to thank the entire ETHGlobal, Aave and Portis team and everyone else for their support. Thank you.

@@ -15,12 +15,13 @@ function Home() {
         while reducing the risk of buying at a high-price and reap the benefits
         of compounding.
       </p>
-      <h3>
+      {/* Replace this text with an interactive dropdown that allows user's to select the details and display returns dynamically */}
+      {/* <h3>
         If you invested <span className="highlight-color">just $50</span> every
         month in <span className="highlight-color">ETH</span> for the last{' '}
         <span className="highlight-color">2 years</span>,<br /> you could've got
         <span className="highlight-color"> returns of almost 200% **</span>
-      </h3>
+      </h3> */}
       <hr />
       <br />
       <div>Creating a plan is super-easy</div>

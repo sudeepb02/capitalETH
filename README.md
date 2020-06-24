@@ -23,8 +23,6 @@ Investing in decentralized cryptocurrencies has largely been ignored in the DeFi
 
 ## Deployment instructions
 
-> **Important:** While working on the demo video, I had commented out the code for validating only ready installments. So in the absence of that check, the same plan can be processed again and again. Ideally, the providers dashboard won't display installments that are not ready, and the smart contract will revert if processed before time.<br><br>
-
 The current repository has all the token address of Ropsten network. If you want to deploy to any other networks, or a local fork of main network, you need to change the token address (all tokens addresses are updated in the `src/utils` directory)
 
 To deploy:
@@ -40,10 +38,6 @@ To deploy:
 
 capitalETH is currently deployed on the Ropsten test network and [lives here](https://capitaleth.netlify.app/)
 
-### Home
-
-![capitalETH-1](./src/assets/ss01.png)
-
 ### Investors Dashboard view
 
 ![capitalETH-2](./src/assets/ss02.png)
@@ -54,4 +48,4 @@ capitalETH is currently deployed on the Ropsten test network and [lives here](ht
 
 ## Other details
 
-This project was built in less than 30 days for the ETHGlobal Hack Money Hackathon. I would really like to thank the entire ETHGlobal, Aave and Portis team and everyone else for their support. Thank you.
+This project was built in less than 30 days for the ETHGlobal HackMoney Hackathon. I would really like to thank the entire ETHGlobal, Aave and Portis team and everyone else for their support. Thank you.

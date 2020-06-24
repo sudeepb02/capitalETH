@@ -39,7 +39,10 @@ const Process = () => {
     for (let index = 0; index < totalSIPCount; index++) {
       userPlan = await capitalETHInstance.methods.plans(index).call()
       // console.log(userPlan)
-      if (userPlan.isActive) {
+      var readyTime = parseInt(userPlan.lastTx) + parseInt(userPlan.frequency)
+      if (userPlan.isActive && readyTime < currentTime) {
+        console.log("CurrentTime : ", currentTime)
+        console.log("Plan ready at: ", readyTime)
         //  && userPlan.lastTx + userPlan.frequency < currentTime - Commented for demo
         setPlans((prevPlans) => [...prevPlans, userPlan])
         processorFee = await capitalETHInstance.methods
